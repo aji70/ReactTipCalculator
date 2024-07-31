@@ -17,9 +17,9 @@ function App() {
   }
 
   function handleResert() {
-    setBill("");
-    setTip("");
-    fSetTip("");
+    setBill();
+    setTip();
+    fSetTip();
   }
   return (
     <div className="App">
