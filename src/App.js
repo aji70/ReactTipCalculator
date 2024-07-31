@@ -94,7 +94,7 @@ function Display({ bill, tip, ftip }) {
   const total = bill + realTip;
   return (
     <div className="bill">
-      {total > 0 && <h3>{`You pay $${total} ($${bill} + ${realTip} tip)`}</h3>}
+      {total > 0 && <h3>{`You pay $${total} ($${bill} + $${realTip} tip)`}</h3>}
     </div>
   );
 }
