@@ -1,105 +1,74 @@
 import { useState } from "react";
 
-function App() {
+export default function App() {
+  return (
+    <div className="app">
+      <TipCalculator />
+    </div>
+  );
+}
+
+function TipCalculator() {
   const [bill, setBill] = useState("");
-  const [tip, setTip] = useState("");
-  const [ftip, fSetTip] = useState("");
-  function handleBill(e) {
-    setBill(Number(e.target.value));
-  }
-  function handleTip(e) {
-    setTip(Number(e.target.value));
-    console.log(tip);
-  }
-  function handleFTip(e) {
-    fSetTip(Number(e.target.value));
-    console.log(ftip);
-  }
+  const [percentage1, setPercentage1] = useState(0);
+  const [percentage2, setPercentage2] = useState(0);
 
-  function handleResert() {
-    setBill();
-    setTip();
-    fSetTip();
+  const tip = (bill * (percentage1 + percentage2)) / 2 / 100;
+  function handleReset() {
+    setBill("");
+    setPercentage1("");
+    setPercentage2("");
   }
   return (
-    <div className="App">
-      <Bill bill={bill} handleBill={handleBill} />
-      <Question tip={tip} handleTip={handleTip}>
+    <div>
+      <BillInput bill={bill} onSetBill={setBill} />
+      <SelectPercentage percentage={percentage1} onSelect={setPercentage1}>
         How did you Like the service
-      </Question>
-      <Question1 tip={ftip} handleFTip={handleFTip}>
+      </SelectPercentage>
+      <SelectPercentage percentage={percentage2} onSelect={setPercentage2}>
         How did your Friend Like the service
-      </Question1>
-      <Display bill={bill} tip={tip} ftip={ftip} />
-      <Button handleResert={handleResert} />
+      </SelectPercentage>
+      <Output bill={bill} tip={tip} />
+      <Reset reset={handleReset} />
     </div>
   );
 }
-
-function Bill({ bill, handleBill }) {
+function BillInput({ bill, onSetBill }) {
   return (
-    <div className="bill">
-      <p>
-        How much was the bill?
-        <span>
-          <input
-            type="number"
-            placeholder="How much was the bill?"
-            value={bill}
-            onChange={handleBill}
-          />
-        </span>
-      </p>
+    <div>
+      <label>How much was the bill?</label>
+      <input
+        type="text"
+        placeholder="How much was the bill?"
+        value={bill}
+        onChange={(e) => onSetBill(Number(e.target.value))}
+      />
     </div>
   );
 }
-
-function Question({ tip, handleTip, children }) {
+function SelectPercentage({ children, percentage, onSelect }) {
   return (
-    <div className="bill">
-      <p>
-        {children}
-        <span>
-          <select value={tip} onChange={handleTip}>
-            <option value={0}>Dissatisfied(0%)</option>
-            <option value={5}>It was Okay(5%)</option>
-            <option value={10}>It was Good (10%)</option>
-            <option value={20}>Absolutely Amazing(20%)</option>
-          </select>
-        </span>
-      </p>
+    <div>
+      <label>{children}</label>
+      <select
+        value={percentage}
+        onChange={(e) => onSelect(Number(e.target.value))}
+      >
+        <option value={0}>Dissatisfied(0%)</option>
+        <option value={5}>It was Okay(5%)</option>
+        <option value={10}>It was Good (10%)</option>
+        <option value={20}>Absolutely Amazing(20%)</option>
+      </select>
     </div>
   );
 }
-function Question1({ ftip, handleFTip, children }) {
+function Output({ bill, tip }) {
   return (
-    <div className="bill">
-      <p>
-        {children}
-        <span>
-          <select value={ftip} onChange={handleFTip}>
-            <option value={0}>Dissatisfied(0%)</option>
-            <option value={5}>It was Okay(5%)</option>
-            <option value={10}>It was Good (10%)</option>
-            <option value={20}>Absolutely Amazing(20%)</option>
-          </select>
-        </span>
-      </p>
-    </div>
+    <h3>
+      You pay {bill + tip} (${bill} + ${tip} tip)
+    </h3>
   );
 }
-
-function Display({ bill, tip, ftip }) {
-  const realTip = (tip + ftip) / 2;
-  const total = bill + realTip;
-  return (
-    <div className="bill">
-      {total > 0 && <h3>{`You pay $${total} ($${bill} + $${realTip} tip)`}</h3>}
-    </div>
-  );
+function Reset({ reset }) {
+  return <button onClick={reset}>Reset</button>;
 }
-
-function Button({ handleResert }) {
-  return <button onClick={handleResert}>Reset</button>;
-}
-export default App;
