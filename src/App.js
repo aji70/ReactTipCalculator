@@ -28,8 +28,12 @@ function TipCalculator() {
       <SelectPercentage percentage={percentage2} onSelect={setPercentage2}>
         How did your Friend Like the service
       </SelectPercentage>
-      <Output bill={bill} tip={tip} />
-      <Reset reset={handleReset} />
+      {bill > 0 && (
+        <>
+          <Output bill={bill} tip={tip} />
+          <Reset reset={handleReset} />
+        </>
+      )}
     </div>
   );
 }
